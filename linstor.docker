@@ -1,7 +1,7 @@
 #!/bin/bash
-
 REPO=daocloud.io/piraeus
 TAG=v1.0.10-alpine
+LS_CONTROLLERS=
 
 docker run --rm \
 -v /etc/linstor:/etc/linstor:ro \
