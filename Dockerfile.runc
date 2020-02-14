@@ -1,3 +1,13 @@
 FROM quay.azk8s.cn/piraeusdatastore/piraeus-client
 
-ADD oci /runc
+ADD oci /oci
+
+RUN set -x && \
+    apt-get install -y curl && \
+    curl -L https://github.com/opencontainers/runc/releases/download/v1.0.0-rc10/runc.amd64 > /oci/runc && \
+    apt-get autoremove -y curl && \
+    apt-get clean -y && \
+    cd /oci && \
+    tar -zcf /oci.tgz * && \
+    cd / && \
+    rm -fr /oci

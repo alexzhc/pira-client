@@ -10,13 +10,24 @@ RUN cp -v /usr/bin/linstor /tmp/site/linstor-bin
 
 RUN sed -i 's#/usr/bin/python#/usr/local/bin/python#g' /tmp/site/linstor-bin
 
+ADD oci /tmp/oci
+
+RUN set -x && \
+    apt-get install -y curl 
+
+RUN set -x && \
+    curl -L https://github.com/containers/crun/releases/download/0.12.1/crun-0.12.1-static-x86_64 > /tmp/oci/runc && \
+    cd /tmp/oci && \
+    tar -zcf /tmp/oci.tgz * && \
+    rm -vfr /tmp/oci
+
 FROM python:3-alpine
 
 COPY --from=builder /tmp /tmp/
 
-RUN ls /usr/local/lib/python3.8
-
 RUN set -x && \
+    ls -lh /tmp && \
+    mv -v /tmp/oci.tgz / && \
     mv -v /tmp/site/linstor-bin /usr/local/bin/linstor && \
     mv -v /tmp/site/*linstor* /usr/local/lib/python3.8/site-packages/ && \
     linstor -v
