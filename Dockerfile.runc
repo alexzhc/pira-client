@@ -1,4 +1,3 @@
 FROM quay.azk8s.cn/piraeusdatastore/piraeus-client
 
-ADD oci /
-
+ADD oci /runc
